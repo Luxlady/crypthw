@@ -1,0 +1,108 @@
+
+
+Question: Why is crypt function giving a different hash output for c character when a string of characters is provided in an array. Each character is not separated by ' ' and a comma as shown below.
+
+NOTE: The crypt function does provide the same hash output for c  character when I use another array where each element in the array is separated by ' ' and a comma.
+
+My Reference  on Arrays used:
+https://www.studytonight.com/c/string-and-character-array.php
+Declaring and Initializing a string variables
+There are different ways to initialize a character array variable.
+
+char name[13] = "StudyTonight";       // valid character array initialization
+
+char name[10] = {'L','e','s','s','o','n','s','\0'};     // valid initialization
+Remember that when you initialize a character array by listing all of its characters separately then you must supply the '\0' character explicitly.
+
+
+
+OUTPUT of my program:
+
+
+~/workspace/pset2/crack/ $ ./Questionloop1
+code is 50bEGa5oaIHik.
+check1 is: 50E.22VIj0CEY, charac is: 2 = c. 
+.done. 
+
+MY Code:
+#include <stdlib.h>
+#include <stdio.h>
+#include <cs50.h>
+#include <string.h>
+#include <ctype.h>
+#include <math.h>
+#include <float.h>
+
+#define _GNU_SOURCE         /* See feature_test_macros(7) */
+#include <crypt.h>
+
+#define _XOPEN_SOURCE       /* See feature_test_macros(7) */
+#include <unistd.h>
+
+
+int main(void)
+{
+
+
+ int i = 0;
+ int j = 0;
+ int n = 0;
+
+char code[14];
+
+//test using alphabet directly by acessing alphabet array alphstest[] in crypt function
+char store2[6];
+char passwd[6];
+char check1[14];
+char store1[6];
+
+
+ //TEST
+    char alphstest[30] = "abcdefghijklmnopqrstuvwxyz";
+
+
+    char* key = "c";
+    char* salt = "50";
+    strcpy(code, crypt(key,salt));
+    char test1[2];
+    int result;
+
+
+         //strcpy(code, crypt(key,salt));
+         printf("code is %s.\n", code);
+        
+	//Separate test
+       
+       for (j = 2; j < 3; j++)
+       {
+            //NOt using separate build of password; direct use of alphabet
+            
+            strcpy(check1, (crypt(&alphstest[j], salt)));
+
+
+            printf("check1 is: %s, charac is: %i = %c. \n.", check1, j, alphstest[j]);
+
+
+            if (strcmp(check1, code) == 0)
+            {
+                printf("Strings Matched! Results: %d . \n", strcmp(check1, code));
+                //Only storing one character
+                store2[0] = alphstest[2];
+                store2[1] = '\0';
+                strcpy(passwd, store2);
+
+                for(n = 0; passwd[n] != '\0'; n++)
+                {
+                    printf("password character is: %i = %c. \n", n, passwd[n]);
+                }
+                return 0;
+            }
+        }
+    //}
+   // while (alphstest[j] != '\0');
+
+ printf("done. \n");
+
+ return 0;
+
+}
